@@ -1,0 +1,92 @@
+{{- if and .Values.node.enabled (and (eq .Values.node.kind "Deployment")) -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  {{- if .Values.node.deploymentAnnotations }}
+  annotations:
+    {{ toYaml .Values.node.deploymentAnnotations }}
+  {{- end }}
+  labels:
+  {{- include "thingsboard.node.labels" . | nindent 4 }}
+  name: {{ template "thingsboard.node.fullname" . }}
+  {{ include "thingsboard.namespace" . | nindent 2 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "thingsboard.node.matchLabels" . | nindent 6 }}
+  replicas: {{ .Values.node.replicas }}
+  template:
+    metadata:
+      {{- if .Values.node.podAnnotations }}
+      annotations:
+        {{ toYaml .Values.node.podAnnotations }}
+      {{- end }}
+      labels:
+      {{- include "thingsboard.node.labels" . | nindent 8 }}
+      {{- if .Values.node.pod.labels }}
+      {{ toYaml .Values.node.pod.labels | indent 8 }}
+    {{- end }}
+    spec:
+      serviceAccountName: {{ template "thingsboard.node.serviceAccount.name" . }}
+      {{- if .Values.node.priorityClassName }}
+      priorityClassName: "{{ .Values.node.priorityClassName }}"
+      {{- end }}
+      containers:
+        - name: {{ template "thingsboard.name" . }}-{{ .Values.node.name }}
+          image: "{{ .Values.node.image.repository }}:{{ .Chart.AppVersion }}"
+          imagePullPolicy: "{{ .Values.node.image.pullPolicy }}"
+          env:
+            - name: RPC_HOST
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: CLUSTER_NODE_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: TB_HOST
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+          ports:
+            - name: rpc
+              containerPort: 9001
+              protocol: TCP
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /login
+              port: http
+            initialDelaySeconds: {{ .Values.node.livenessProbe.initialDelay }}
+            periodSeconds: {{ .Values.node.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.node.livenessProbe.timeoutSeconds }}
+            failureThreshold: {{ .Values.node.livenessProbe.failureThreshold }}
+            successThreshold: {{ .Values.node.livenessProbe.successThreshold }}
+          resources:
+          {{ toYaml .Values.node.resources | indent 2 }}
+          volumeMounts:
+            - name: config-volume
+              mountPath: /config
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+      {{ toYaml .Values.imagePullSecrets | indent 2 }}
+      {{- end }}
+      {{- if .Values.node.tolerations }}
+      tolerations:
+      {{ toYaml .Values.node.tolerations | indent 8 }}
+      {{- end }}
+      {{- if .Values.node.nodeSelector }}
+      nodeSelector:
+      {{ toYaml .Values.node.nodeSelector | indent 8 }}
+      {{- end }}
+      {{- if .Values.node.securityContext }}
+      securityContext:
+      {{ toYaml .Values.node.securityContext | indent 8 }}
+      {{- end }}
+      volumes:
+        - name: config-volume
+          configMap:
+            name: {{ if .Values.node.configMapOverrideName }}{{ .Release.Name }}-{{ .Values.node.configMapOverrideName }}{{- else }}{{ template "thingsboard.node.fullname" . }}{{- end }}
+{{- end -}}

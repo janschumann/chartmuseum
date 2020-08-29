@@ -1,0 +1,19 @@
+{{- if and .Values.transport.mqtt.enabled ( and (empty .Values.transport.mqtt.configMapOverrideName)) -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+  {{- include "thingsboard.transport.mqtt.labels" . | nindent 4 }}
+  name: {{ template "thingsboard.transport.mqtt.fullname" . }}
+  {{- include "thingsboard.namespace" . | nindent 2 }}
+data:
+{{- $root := . -}}
+{{- range $key, $value := .Values.transport.mqtt.config }}
+  {{- if $key | regexMatch ".*\\.ya?ml$" }}
+  {{ $key }}: |
+{{ toYaml $value | default "{}" | indent 4 }}
+  {{- else }}
+  {{ $key }}: {{ toYaml $value | indent 4 }}
+  {{- end }}
+{{- end -}}
+{{- end -}}

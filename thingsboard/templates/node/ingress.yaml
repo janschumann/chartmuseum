@@ -1,0 +1,36 @@
+{{- if and .Values.node.enabled .Values.node.ingress.enabled -}}
+{{- $serviceName := include "thingsboard.node.fullname" . -}}
+{{- $servicePort := .Values.node.service.servicePort.port -}}
+{{- if .Capabilities.APIVersions.Has "networking.k8s.io/v1beta1" }}
+apiVersion: networking.k8s.io/v1beta1
+{{ else }}
+apiVersion: extensions/v1beta1
+{{ end -}}
+kind: Ingress
+metadata:
+{{- if .Values.node.ingress.annotations }}
+  annotations:
+{{ toYaml .Values.node.ingress.annotations | indent 4 }}
+{{- end }}
+  labels:
+    {{- include "thingsboard.node.labels" . | nindent 4 }}
+  name: {{ template "thingsboard.node.fullname" . }}
+{{ include "thingsboard.namespace" . | indent 2 }}
+spec:
+  rules:
+    - host: {{ .Values.node.ingress.host }}
+      http:
+        paths:
+        {{- range $path := .Values.node.ingress.paths }}
+          - path: {{ $path }}
+            backend:
+              serviceName: {{ $serviceName }}
+              servicePort: {{ $servicePort }}
+        {{- end -}}
+  {{- if .Values.node.ingress.tls }}
+  tls:
+    - hosts:
+        - {{ .Values.node.ingress.host }}
+      secretName: {{ template "thingsboard.fullname" . }}
+  {{- end -}}
+{{- end -}}

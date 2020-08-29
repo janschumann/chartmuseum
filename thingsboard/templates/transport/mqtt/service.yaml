@@ -1,0 +1,26 @@
+{{- if .Values.transport.mqtt.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  {{- if .Values.transport.mqtt.service.annotations }}
+  annotations:
+    {{ toYaml .Values.transport.mqtt.service.annotations }}
+  {{- end }}
+  labels:
+  {{- include "thingsboard.transport.mqtt.labels" . | nindent 4 }}
+  {{- if .Values.transport.mqtt.service.labels }}
+  {{ toYaml .Values.transport.mqtt.service.labels | nindent 4 }}
+  {{- end }}
+  name: {{ template "thingsboard.transport.mqtt.fullname" . }}
+  {{ include "thingsboard.namespace" . | nindent 2 }}
+spec:
+  ports:
+    - name: {{ .Values.transport.mqtt.service.servicePort.name }}
+      port: {{ .Values.transport.mqtt.service.servicePort.port }}
+      targetPort: {{ .Values.transport.mqtt.service.servicePort.targetPort }}
+      protocol: TCP
+  selector:
+  {{- include "thingsboard.transport.mqtt.matchLabels" . | nindent 4 }}
+  type: "{{ .Values.transport.mqtt.service.type }}"
+{{- end -}}
+

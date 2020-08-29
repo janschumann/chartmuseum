@@ -1,0 +1,26 @@
+{{- if .Values.transport.http.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  {{- if .Values.transport.http.service.annotations }}
+  annotations:
+    {{ toYaml .Values.transport.http.service.annotations }}
+  {{- end }}
+  labels:
+  {{- include "thingsboard.transport.http.labels" . | nindent 4 }}
+  {{- if .Values.transport.http.service.labels }}
+  {{ toYaml .Values.transport.http.service.labels | nindent 4 }}
+  {{- end }}
+  name: {{ template "thingsboard.transport.http.fullname" . }}
+  {{ include "thingsboard.namespace" . | nindent 2 }}
+spec:
+  ports:
+    - name: {{ .Values.transport.http.service.servicePort.name }}
+      port: {{ .Values.transport.http.service.servicePort.port }}
+      targetPort: {{ .Values.transport.http.service.servicePort.targetPort }}
+      protocol: TCP
+  selector:
+  {{- include "thingsboard.transport.http.matchLabels" . | nindent 4 }}
+  type: "{{ .Values.transport.http.service.type }}"
+{{- end -}}
+

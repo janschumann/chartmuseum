@@ -1,0 +1,87 @@
+{{- if and .Values.transport.http.enabled (and (eq .Values.transport.http.kind "DaemonSet")) -}}
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  {{- if .Values.transport.http.deploymentAnnotations }}
+  annotations:
+    {{ toYaml .Values.transport.http.deploymentAnnotations }}
+  {{- end }}
+  labels:
+  {{- include "thingsboard.transport.http.labels" . | nindent 4 }}
+  name: {{ template "thingsboard.transport.http.fullname" . }}
+  {{ include "thingsboard.namespace" . | nindent 2 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "thingsboard.transport.http.matchLabels" . | nindent 6 }}
+  {{- if .Values.transport.http.updateStrategy }}
+  updateStrategy:
+    {{ toYaml .Values.transport.http.updateStrategy }}
+  {{- end }}
+  template:
+    metadata:
+      {{- if .Values.transport.http.podAnnotations }}
+      annotations:
+        {{ toYaml .Values.transport.http.podAnnotations }}
+      {{- end }}
+      labels:
+      {{- include "thingsboard.transport.http.labels" . | nindent 8 }}
+      {{- if .Values.transport.http.pod.labels }}
+      {{ toYaml .Values.transport.http.pod.labels | indent 8 }}
+    {{- end }}
+    spec:
+      serviceAccountName: {{ template "thingsboard.transport.http.serviceAccount.name" . }}
+      {{- if .Values.transport.http.priorityClassName }}
+      priorityClassName: "{{ .Values.transport.http.priorityClassName }}"
+      {{- end }}
+      containers:
+        - name: {{ template "thingsboard.name" . }}-{{ .Values.transport.http.name }}
+          image: "{{ .Values.transport.http.image.repository }}:{{ .Chart.AppVersion }}"
+          imagePullPolicy: "{{ .Values.transport.http.image.pullPolicy }}"
+          env:
+            - name: CLUSTER_NODE_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: TB_HOST
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: {{ .Values.transport.http.livenessProbe.initialDelay }}
+            periodSeconds: {{ .Values.transport.http.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.transport.http.livenessProbe.timeoutSeconds }}
+            failureThreshold: {{ .Values.transport.http.livenessProbe.failureThreshold }}
+            successThreshold: {{ .Values.transport.http.livenessProbe.successThreshold }}
+          resources:
+          {{ toYaml .Values.transport.http.resources | indent 2 }}
+          volumeMounts:
+            - name: config-volume
+              mountPath: /config
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+      {{ toYaml .Values.imagePullSecrets | indent 2 }}
+      {{- end }}
+      {{- if .Values.transport.http.tolerations }}
+      tolerations:
+      {{ toYaml .Values.transport.http.tolerations | indent 8 }}
+      {{- end }}
+      {{- if .Values.transport.http.nodeSelector }}
+      nodeSelector:
+      {{ toYaml .Values.transport.http.nodeSelector | indent 8 }}
+      {{- end }}
+      {{- if .Values.transport.http.securityContext }}
+      securityContext:
+      {{ toYaml .Values.transport.http.securityContext | indent 8 }}
+      {{- end }}
+      volumes:
+        - name: config-volume
+          configMap:
+            name: {{ if .Values.transport.http.configMapOverrideName }}{{ .Release.Name }}-{{ .Values.transport.http.configMapOverrideName }}{{- else }}{{ template "thingsboard.transport.http.fullname" . }}{{- end }}
+{{- end -}}

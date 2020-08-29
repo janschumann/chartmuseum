@@ -1,0 +1,32 @@
+{{- if .Values.setup.enabled -}}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  labels:
+  {{- include "thingsboard.setup.labels" . | nindent 4 }}
+  name: {{ template "thingsboard.setup.fullname" . }}
+  {{ include "thingsboard.namespace" . | nindent 2 }}
+spec:
+  backoffLimit: 4
+  template:
+    spec:
+      volumes:
+        - name: config-volume
+          configMap:
+            name: {{ if .Values.node.configMapOverrideName }}{{ .Release.Name }}-{{ .Values.node.configMapOverrideName }}{{- else }}{{ template "thingsboard.node.fullname" . }}{{- end }}
+      containers:
+        - name: {{ template "thingsboard.setup.fullname" . }}
+          image: "{{ .Values.node.image.repository }}:{{ .Chart.AppVersion }}"
+          imagePullPolicy: "{{ .Values.node.image.pullPolicy }}"
+          env:
+            - name: {{ if eq .Values.setup.kind "upgrade" }}UPGRADE_TB{{ else }}INSTALL_TB{{ end }}
+              value: "true"
+            - name: FROM_VERSION
+              value: "{{ .Values.setup.fromVersion }}"
+          volumeMounts:
+            - name: config-volume
+              mountPath: /config
+          command: ['sh', '-c', 'start-tb-node.sh']
+      restartPolicy: Never
+{{- end -}}
+

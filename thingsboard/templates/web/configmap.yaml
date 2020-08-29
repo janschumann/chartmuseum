@@ -1,0 +1,19 @@
+{{- if and .Values.web.enabled ( and (empty .Values.web.configMapOverrideName)) -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+  {{- include "thingsboard.web.labels" . | nindent 4 }}
+  name: {{ template "thingsboard.web.fullname" . }}
+  {{- include "thingsboard.namespace" . | nindent 2 }}
+data:
+{{- $root := . -}}
+{{- range $key, $value := .Values.web.config }}
+  {{- if $key | regexMatch ".*\\.ya?ml$" }}
+  {{ $key }}: |
+{{ toYaml $value | default "{}" | indent 4 }}
+  {{- else }}
+  {{ $key }}: {{ toYaml $value | indent 4 }}
+  {{- end }}
+{{- end -}}
+{{- end -}}

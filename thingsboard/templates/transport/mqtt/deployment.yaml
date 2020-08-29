@@ -1,0 +1,84 @@
+{{- if and .Values.transport.mqtt.enabled (and (eq .Values.transport.mqtt.kind "Deployment")) -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  {{- if .Values.transport.mqtt.deploymentAnnotations }}
+  annotations:
+    {{ toYaml .Values.transport.mqtt.deploymentAnnotations }}
+  {{- end }}
+  labels:
+  {{- include "thingsboard.transport.mqtt.labels" . | nindent 4 }}
+  name: {{ template "thingsboard.transport.mqtt.fullname" . }}
+  {{ include "thingsboard.namespace" . | nindent 2 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "thingsboard.transport.mqtt.matchLabels" . | nindent 6 }}
+  replicas: {{ .Values.transport.mqtt.replicas }}
+  template:
+    metadata:
+      {{- if .Values.transport.mqtt.podAnnotations }}
+      annotations:
+        {{ toYaml .Values.transport.mqtt.podAnnotations }}
+      {{- end }}
+      labels:
+      {{- include "thingsboard.transport.mqtt.labels" . | nindent 8 }}
+      {{- if .Values.transport.mqtt.pod.labels }}
+      {{ toYaml .Values.transport.mqtt.pod.labels | indent 8 }}
+    {{- end }}
+    spec:
+      serviceAccountName: {{ template "thingsboard.transport.mqtt.serviceAccount.name" . }}
+      {{- if .Values.transport.mqtt.priorityClassName }}
+      priorityClassName: "{{ .Values.transport.mqtt.priorityClassName }}"
+      {{- end }}
+      containers:
+        - name: {{ template "thingsboard.name" . }}-{{ .Values.transport.mqtt.name }}
+          image: "{{ .Values.transport.mqtt.image.repository }}:{{ .Chart.AppVersion }}"
+          imagePullPolicy: "{{ .Values.transport.mqtt.image.pullPolicy }}"
+          env:
+            - name: CLUSTER_NODE_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: TB_HOST
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+          ports:
+            - name: mqtt
+              containerPort: 1883
+              protocol: TCP
+          livenessProbe:
+            tcpSocket:
+              port: 1883
+            initialDelaySeconds: {{ .Values.transport.mqtt.livenessProbe.initialDelay }}
+            periodSeconds: {{ .Values.transport.mqtt.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.transport.mqtt.livenessProbe.timeoutSeconds }}
+            failureThreshold: {{ .Values.transport.mqtt.livenessProbe.failureThreshold }}
+            successThreshold: {{ .Values.transport.mqtt.livenessProbe.successThreshold }}
+          resources:
+          {{ toYaml .Values.transport.mqtt.resources | indent 2 }}
+          volumeMounts:
+            - name: config-volume
+              mountPath: /config
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+      {{ toYaml .Values.imagePullSecrets | indent 2 }}
+      {{- end }}
+      {{- if .Values.transport.mqtt.tolerations }}
+      tolerations:
+      {{ toYaml .Values.transport.mqtt.tolerations | indent 8 }}
+      {{- end }}
+      {{- if .Values.transport.mqtt.nodeSelector }}
+      nodeSelector:
+      {{ toYaml .Values.transport.mqtt.nodeSelector | indent 8 }}
+      {{- end }}
+      {{- if .Values.transport.mqtt.securityContext }}
+      securityContext:
+      {{ toYaml .Values.transport.mqtt.securityContext | indent 8 }}
+      {{- end }}
+      volumes:
+        - name: config-volume
+          configMap:
+            name: {{ if .Values.transport.mqtt.configMapOverrideName }}{{ .Release.Name }}-{{ .Values.transport.mqtt.configMapOverrideName }}{{- else }}{{ template "thingsboard.transport.mqtt.fullname" . }}{{- end }}
+{{- end -}}
