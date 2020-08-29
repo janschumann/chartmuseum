@@ -39,10 +39,6 @@ spec:
           image: "{{ .Values.node.image.repository }}:{{ .Chart.AppVersion }}"
           imagePullPolicy: "{{ .Values.node.image.pullPolicy }}"
           env:
-            - name: RPC_HOST
-              valueFrom:
-                fieldRef:
-                  fieldPath: status.podIP
             - name: CLUSTER_NODE_ID
               valueFrom:
                 fieldRef:
