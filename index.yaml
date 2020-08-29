@@ -3,7 +3,17 @@ entries:
   thingsboard:
   - apiVersion: v2
     appVersion: 2.4.3
-    created: "2020-08-29T09:31:23.481628+02:00"
+    created: "2020-08-29T15:19:02.258537+02:00"
+    description: Thingsboard
+    digest: 0b732e67beb7de8c865dd4f59d27738144b90c296d00709b44799d13cce48434
+    name: thingsboard
+    type: application
+    urls:
+    - thingsboard-0.3.2.tgz
+    version: 0.3.2
+  - apiVersion: v2
+    appVersion: 2.4.3
+    created: "2020-08-29T15:19:02.254585+02:00"
     description: Thingsboard
     digest: 30f1b0bfd8627de56febc10fa028d71fea2923ca102e30d23f4a08f82c16074c
     name: thingsboard
@@ -13,7 +23,7 @@ entries:
     version: 0.3.1
   - apiVersion: v2
     appVersion: 2.4.3
-    created: "2020-08-29T09:31:23.477977+02:00"
+    created: "2020-08-29T15:19:02.250272+02:00"
     dependencies:
     - alias: web
       condition: web.enabled
@@ -52,4 +62,4 @@ entries:
     urls:
     - thingsboard-0.2.1.tgz
     version: 0.2.1
-generated: "2020-08-29T09:31:23.475237+02:00"
+generated: "2020-08-29T15:19:02.248792+02:00"
