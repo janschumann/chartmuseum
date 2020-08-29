@@ -1,0 +1,62 @@
+{{- if .Values.setup.kafka -}}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  labels:
+  {{- include "thingsboard.setup-kafka.labels" . | nindent 4 }}
+  name: {{ template "thingsboard.setup-kafka.fullname" . }}-1
+  {{ include "thingsboard.namespace" . | nindent 2 }}
+spec:
+  backoffLimit: 4
+  template:
+    spec:
+      containers:
+        - name: {{ template "thingsboard.setup-kafka.fullname" . }}-1
+          image: "bitnami/kafka:2.4.1-debian-10-r0"
+          env:
+            - name: BOOTSTRAP_SERVER
+              value: "{{ .Values.setup.kafkaServer }}"
+          command: ['/bin/bash', '-c', '/opt/bitnami/kafka/bin/kafka-topics.sh --create --bootstrap-server ${BOOTSTRAP_SERVER} --topic js.eval.requests --partitions 100 --replication-factor 1 --config=cleanup.policy=delete --config=retention.ms=60000 --config=segment.bytes=26214400 --config=retention.bytes=104857600 || true']
+      restartPolicy: Never
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  labels:
+  {{- include "thingsboard.setup-kafka.labels" . | nindent 4 }}
+  name: {{ template "thingsboard.setup-kafka.fullname" . }}-2
+  {{ include "thingsboard.namespace" . | nindent 2 }}
+spec:
+  backoffLimit: 4
+  template:
+    spec:
+      containers:
+        - name: {{ template "thingsboard.setup-kafka.fullname" . }}-2
+          image: "bitnami/kafka:2.4.1-debian-10-r0"
+          env:
+            - name: BOOTSTRAP_SERVER
+              value: "{{ .Values.setup.kafkaServer }}"
+          command: ['/bin/bash', '-c', '/opt/bitnami/kafka/bin/kafka-topics.sh --create --bootstrap-server ${BOOTSTRAP_SERVER} --topic tb.transport.api.requests --partitions 30 --replication-factor 1 --config=cleanup.policy=delete --config=retention.ms=60000 --config=segment.bytes=26214400 --config=retention.bytes=104857600 || true']
+      restartPolicy: Never
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  labels:
+  {{- include "thingsboard.setup-kafka.labels" . | nindent 4 }}
+  name: {{ template "thingsboard.setup-kafka.fullname" . }}-3
+  {{ include "thingsboard.namespace" . | nindent 2 }}
+spec:
+  backoffLimit: 4
+  template:
+    spec:
+      containers:
+        - name: {{ template "thingsboard.setup-kafka.fullname" . }}-3
+          image: "bitnami/kafka:2.4.1-debian-10-r0"
+          env:
+            - name: BOOTSTRAP_SERVER
+              value: "{{ .Values.setup.kafkaServer }}"
+          command: ['/bin/bash', '-c', '/opt/bitnami/kafka/bin/kafka-topics.sh --create --bootstrap-server ${BOOTSTRAP_SERVER} --topic tb.rule-engine --partitions 30 --replication-factor 1 --config=cleanup.policy=delete --config=retention.ms=60000 --config=segment.bytes=26214400 --config=retention.bytes=104857600 || true']
+      restartPolicy: Never
+{{- end -}}
+

@@ -7,6 +7,8 @@ setup:
   enabled: false
   kind: install
   fromVersion:
+  kafka: false
+  kafkaServer:
 
 node:
   enabled: true

@@ -31,6 +31,12 @@ component: "setup"
 {{ include "thingsboard.common.metaLabels" . }}
 {{- end -}}
 
+{{- define "thingsboard.setup-kafka.labels" -}}
+component: "setup-kafka"
+{{ include "thingsboard.common.matchLabels" . }}
+{{ include "thingsboard.common.metaLabels" . }}
+{{- end -}}
+
 {{- define "thingsboard.node.labels" -}}
 {{ include "thingsboard.node.matchLabels" . }}
 {{ include "thingsboard.common.metaLabels" . }}
@@ -125,6 +131,19 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- printf "%s-setup" .Release.Name | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
 {{- printf "%s-%s-setup" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Create a fully qualified setup-kafka name.
+We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
+*/}}
+{{- define "thingsboard.setup-kafka.fullname" -}}
+{{- $name := default .Chart.Name .Values.nameOverride -}}
+{{- if contains $name .Release.Name -}}
+{{- printf "%s-setup-kafka" .Release.Name | trunc 63 | trimSuffix "-" -}}
+{{- else -}}
+{{- printf "%s-%s-setup-kafka" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 {{- end -}}
 
