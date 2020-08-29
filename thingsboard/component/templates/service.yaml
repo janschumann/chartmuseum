@@ -1,0 +1,23 @@
+{{- if .Values.service.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "thingsboard-component.fullname" . }}
+  labels:
+    {{- include "thingsboard-component.labels" . | nindent 4 }}
+  {{- if .Values.service.annotations }}
+  annotations:
+    {{- toYaml .Values.service.annotations | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+  {{- range .Values.service.ports }}
+    - port: {{ .port }}
+      targetPort: {{ .target }}
+      protocol: {{ .protocol | default "TCP" }}
+      name: {{ .name }}
+  {{- end }}
+  selector:
+    {{- include "thingsboard-component.selectorLabels" . | nindent 4 }}
+{{- end }}

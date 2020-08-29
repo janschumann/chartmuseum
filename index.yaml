@@ -1,0 +1,45 @@
+apiVersion: v1
+entries:
+  thingsboard:
+  - apiVersion: v2
+    appVersion: 2.4.3
+    created: "2020-08-29T06:22:22.217915+02:00"
+    dependencies:
+    - alias: web
+      condition: web.enabled
+      name: component
+      repository: file://./component
+      version: 0.2.0
+    - alias: node
+      condition: node.enabled
+      name: component
+      repository: file://./component
+      version: 0.2.0
+    - alias: http-transport
+      condition: http-transport.enabled
+      name: component
+      repository: file://./component
+      version: 0.2.0
+    - alias: mqtt-transport
+      condition: mqtt-transport.enabled
+      name: component
+      repository: file://./component
+      version: 0.2.0
+    - alias: coap-transport
+      condition: coap-transport.enabled
+      name: component
+      repository: file://./component
+      version: 0.2.0
+    - alias: js-extractor
+      condition: js-extractor.enabled
+      name: component
+      repository: file://./component
+      version: 0.2.0
+    description: Thingsboard deployment
+    digest: 91ae335f00216ffaa5bbda0bacad51a1c4c3d434a2d1198a95b0be4ebd9c6142
+    name: thingsboard
+    type: application
+    urls:
+    - thingsboard-0.2.1.tgz
+    version: 0.2.1
+generated: "2020-08-29T06:22:22.215978+02:00"

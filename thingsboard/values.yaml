@@ -1,0 +1,85 @@
+js-extractor:
+  image:
+    repository: thingsboard/tb-js-executor
+
+  enabled: false
+
+  daemonSet: true
+
+  serviceAccount:
+    create: false
+
+  service:
+    enabled: false
+
+coap-transport:
+  image:
+    repository: thingsboard/tb-coap-transport
+
+  enabled: false
+
+  daemonSet: true
+
+  serviceAccount:
+    create: false
+
+  service:
+    enabled: false
+
+http-transport:
+  image:
+    repository: thingsboard/tb-http-transport
+
+  enabled: false
+
+  daemonSet: true
+
+  serviceAccount:
+    create: false
+
+  service:
+    enabled: false
+
+mqtt-transport:
+  image:
+    repository: thingsboard/tb-mqtt-transport
+
+  enabled: false
+
+  daemonSet: true
+
+  serviceAccount:
+    create: false
+
+  service:
+    enabled: false
+
+node:
+  image:
+    repository: thingsboard/tb-node
+
+  enabled: false
+
+  daemonSet: true
+
+  serviceAccount:
+    create: false
+
+  service:
+    enabled: false
+
+web:
+  image:
+    repository: thingsboard/tb-web-ui
+
+  enabled: false
+
+  daemonSet: true
+
+  serviceAccount:
+    create: false
+
+  service:
+    enabled: false
+
+
