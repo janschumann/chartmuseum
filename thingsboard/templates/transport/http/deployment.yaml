@@ -45,16 +45,12 @@ spec:
                 fieldRef:
                   fieldPath: metadata.name
           ports:
-            - name: rpc
-              containerPort: 9001
-              protocol: TCP
             - name: http
               containerPort: 8080
               protocol: TCP
           livenessProbe:
-            httpGet:
-              path: /login
-              port: http
+            tcpSocket:
+              port: 8080
             initialDelaySeconds: {{ .Values.transport.http.livenessProbe.initialDelay }}
             periodSeconds: {{ .Values.transport.http.livenessProbe.periodSeconds }}
             timeoutSeconds: {{ .Values.transport.http.livenessProbe.timeoutSeconds }}
