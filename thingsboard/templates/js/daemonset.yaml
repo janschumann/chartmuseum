@@ -55,7 +55,7 @@ spec:
       tolerations:
       {{ toYaml .Values.js.tolerations | indent 8 }}
       {{- end }}
-      {{- if .Values.js.webSelector }}
+      {{- if .Values.js.nodeSelector }}
       nodeSelector:
       {{ toYaml .Values.js.nodeSelector | indent 8 }}
       {{- end }}
