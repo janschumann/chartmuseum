@@ -3,7 +3,17 @@ entries:
   thingsboard:
   - apiVersion: v2
     appVersion: 3.1.0
-    created: "2020-08-29T15:30:20.119091+02:00"
+    created: "2020-10-03T02:00:38.102457+02:00"
+    description: Thingsboard
+    digest: 24aa95413ba16e40c9970abc9ab10cb5b2e5ce413f973e824cc2f6db3c1a41e8
+    name: thingsboard
+    type: application
+    urls:
+    - thingsboard-0.4.2.tgz
+    version: 0.4.2
+  - apiVersion: v2
+    appVersion: 3.1.0
+    created: "2020-10-03T02:00:38.09697+02:00"
     description: Thingsboard
     digest: 9caa1abc0cd46fadeb6bff9089668f45db82de67822441b808e5cc2fe4c3c613
     name: thingsboard
@@ -13,7 +23,7 @@ entries:
     version: 0.4.1
   - apiVersion: v2
     appVersion: 3.1.0
-    created: "2020-08-29T15:30:20.112632+02:00"
+    created: "2020-10-03T02:00:38.091567+02:00"
     description: Thingsboard
     digest: 9077eafce89d8766bb9cda119a942b133d7e7692557fadb8ad8b1256a69c653c
     name: thingsboard
@@ -23,7 +33,7 @@ entries:
     version: 0.4.0
   - apiVersion: v2
     appVersion: 2.4.3
-    created: "2020-08-29T15:30:20.107717+02:00"
+    created: "2020-10-03T02:00:38.086336+02:00"
     description: Thingsboard
     digest: 0b732e67beb7de8c865dd4f59d27738144b90c296d00709b44799d13cce48434
     name: thingsboard
@@ -33,7 +43,7 @@ entries:
     version: 0.3.2
   - apiVersion: v2
     appVersion: 2.4.3
-    created: "2020-08-29T15:30:20.103402+02:00"
+    created: "2020-10-03T02:00:38.080094+02:00"
     description: Thingsboard
     digest: 30f1b0bfd8627de56febc10fa028d71fea2923ca102e30d23f4a08f82c16074c
     name: thingsboard
@@ -43,7 +53,7 @@ entries:
     version: 0.3.1
   - apiVersion: v2
     appVersion: 2.4.3
-    created: "2020-08-29T15:30:20.099924+02:00"
+    created: "2020-10-03T02:00:38.076535+02:00"
     dependencies:
     - alias: web
       condition: web.enabled
@@ -82,4 +92,4 @@ entries:
     urls:
     - thingsboard-0.2.1.tgz
     version: 0.2.1
-generated: "2020-08-29T15:30:20.097931+02:00"
+generated: "2020-10-03T02:00:38.074249+02:00"
