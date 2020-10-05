@@ -7,8 +7,7 @@ setup:
   enabled: false
   kind: install
   fromVersion:
-  kafka: false
-  kafkaServer:
+  withDemo: false
 
 node:
   enabled: true
@@ -1978,3 +1977,23 @@ transport:
       ## Ingress TLS configuration
       ##
       tls: false
+
+postgres:
+  enabled: false
+
+redis:
+  enabled: false
+
+kafka:
+  enabled: false
+
+haproxy:
+  enabled: false
+  controller:
+    kind: Deployment
+    tcp:
+      1883: thingsboard/thingsboard-tb-mqtt-transport:1883
+
+    service:
+      type: LoadBalancer
+      externalTrafficPolicy: Cluster
