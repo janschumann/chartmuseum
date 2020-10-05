@@ -23,6 +23,8 @@ spec:
               value: "true"
             - name: FROM_VERSION
               value: "{{ .Values.setup.fromVersion }}"
+            - name: LOAD_DEMO
+              value: "{{ toYaml and (eq .Values.setup.kind "install") (.Values.setup.withDemo) }}"
           volumeMounts:
             - name: config-volume
               mountPath: /config
