@@ -868,6 +868,8 @@ node:
   securityContext: {}
   # runAsUser: 0
 
+  affinity: {}
+
   service:
     servicePort:
       name: http
@@ -1042,6 +1044,8 @@ web:
   ##
   nodeSelector: {}
 
+  affinity: {}
+
   ## Annotations to be added to pods
   ##
   podAnnotations: {}
@@ -1170,6 +1174,8 @@ js:
   ## Ref: https://kubernetes.io/docs/user-guide/node-selection/
   ##
   nodeSelector: {}
+
+  affinity: {}
 
   ## Annotations to be added to pods
   ##
@@ -1510,6 +1516,8 @@ transport:
     ## Ref: https://kubernetes.io/docs/user-guide/node-selection/
     ##
     nodeSelector: {}
+
+    affinity: {}
 
     ## Annotations to be added to pods
     ##
@@ -1906,6 +1914,8 @@ transport:
     ## Ref: https://kubernetes.io/docs/user-guide/node-selection/
     ##
     nodeSelector: {}
+
+    affinity: {}
 
     ## Annotations to be added to pods
     ##

@@ -33,7 +33,7 @@ spec:
       {{- end }}
       containers:
         - name: {{ template "thingsboard.name" . }}-{{ .Values.transport.http.name }}
-          image: "{{ .Values.transport.http.image.repository }}:{{ .Chart.AppVersion }}"
+          image: "{{ .Values.transport.http.image.repository }}:{{ template "thingsboard.version" . }}"
           imagePullPolicy: "{{ .Values.transport.http.image.pullPolicy }}"
           env:
             - name: CLUSTER_NODE_ID
@@ -76,6 +76,10 @@ spec:
       {{- if .Values.transport.http.securityContext }}
       securityContext:
       {{ toYaml .Values.transport.http.securityContext | indent 8 }}
+      {{- end }}
+      {{- if .Values.transport.http.affinity }}
+      affinity:
+      {{ toYaml .Values.transport.http.affinity | indent 8 }}
       {{- end }}
       volumes:
         - name: config-volume

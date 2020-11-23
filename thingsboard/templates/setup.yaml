@@ -16,7 +16,7 @@ spec:
             name: {{ if .Values.node.configMapOverrideName }}{{ .Release.Name }}-{{ .Values.node.configMapOverrideName }}{{- else }}{{ template "thingsboard.node.fullname" . }}{{- end }}
       containers:
         - name: {{ template "thingsboard.setup.fullname" . }}
-          image: "{{ .Values.node.image.repository }}:{{ .Chart.AppVersion }}"
+          image: "{{ .Values.node.image.repository }}:{{ template "thingsboard.version" . }}"
           imagePullPolicy: "{{ .Values.node.image.pullPolicy }}"
           env:
             - name: {{ if eq .Values.setup.kind "upgrade" }}UPGRADE_TB{{ else }}INSTALL_TB{{ end }}

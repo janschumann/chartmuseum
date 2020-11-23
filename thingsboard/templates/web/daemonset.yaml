@@ -36,7 +36,7 @@ spec:
       {{- end }}
       containers:
         - name: {{ template "thingsboard.name" . }}-{{ .Values.web.name }}
-          image: "{{ .Values.web.image.repository }}:{{ .Chart.AppVersion }}"
+          image: "{{ .Values.web.image.repository }}:{{ template "thingsboard.version" . }}"
           imagePullPolicy: "{{ .Values.web.image.pullPolicy }}"
           ports:
             - name: http
@@ -71,6 +71,10 @@ spec:
       {{- if .Values.web.securityContext }}
       securityContext:
       {{ toYaml .Values.web.securityContext | indent 8 }}
+      {{- end }}
+      {{- if .Values.web.affinity }}
+      affinity:
+      {{ toYaml .Values.web.affinity | indent 8 }}
       {{- end }}
       volumes:
         - name: config-volume
