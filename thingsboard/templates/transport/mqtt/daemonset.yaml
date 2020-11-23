@@ -36,7 +36,7 @@ spec:
       {{- end }}
       containers:
         - name: {{ template "thingsboard.name" . }}-{{ .Values.transport.mqtt.name }}
-          image: "{{ .Values.transport.mqtt.image.repository }}:{{ .Chart.AppVersion }}"
+          image: "{{ .Values.transport.mqtt.image.repository }}:{{ template "thingsboard.version" . }}"
           imagePullPolicy: "{{ .Values.transport.mqtt.image.pullPolicy }}"
           env:
             - name: CLUSTER_NODE_ID
@@ -79,6 +79,10 @@ spec:
       {{- if .Values.transport.mqtt.securityContext }}
       securityContext:
       {{ toYaml .Values.transport.mqtt.securityContext | indent 8 }}
+      {{- end }}
+      {{- if .Values.transport.mqtt.affinity }}
+      affinity:
+      {{ toYaml .Values.transport.mqtt.affinity | indent 8 }}
       {{- end }}
       volumes:
         - name: config-volume

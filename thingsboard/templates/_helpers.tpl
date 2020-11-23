@@ -13,6 +13,14 @@ Create chart name and version as used by the chart label.
 {{- end -}}
 
 {{/*
+Define the thingsboard.version template
+*/}}
+{{- define "thingsboard.version" -}}
+{{- default .Chart.AppVersion .Values.versionOverride -}}
+{{- end -}}
+
+
+{{/*
 Create unified labels for thingsboard components
 */}}
 {{- define "thingsboard.common.matchLabels" -}}
