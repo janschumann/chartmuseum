@@ -3,7 +3,23 @@ entries:
   thingsboard:
   - apiVersion: v2
     appVersion: 3.1.1
-    created: "2020-10-05T20:52:21.378478+02:00"
+    created: "2020-11-23T20:06:13.555719+01:00"
+    dependencies:
+    - alias: haproxy
+      condition: haproxy.enabled
+      name: haproxy-ingress
+      repository: https://kubernetes-charts-incubator.storage.googleapis.com
+      version: 0.0.27
+    description: Thingsboard
+    digest: 36e023295d7995946c224a33496114c91655b1b07e5bc7e2645a5f3dde3186a1
+    name: thingsboard
+    type: application
+    urls:
+    - thingsboard-0.6.0.tgz
+    version: 0.6.0
+  - apiVersion: v2
+    appVersion: 3.1.1
+    created: "2020-11-23T20:06:13.548907+01:00"
     dependencies:
     - alias: haproxy
       condition: haproxy.enabled
@@ -19,7 +35,7 @@ entries:
     version: 0.5.1
   - apiVersion: v2
     appVersion: 3.1.1
-    created: "2020-10-05T20:52:21.370153+02:00"
+    created: "2020-11-23T20:06:13.541671+01:00"
     dependencies:
     - alias: haproxy
       condition: haproxy.enabled
@@ -35,7 +51,7 @@ entries:
     version: 0.5.0
   - apiVersion: v2
     appVersion: 3.1.0
-    created: "2020-10-05T20:52:21.362118+02:00"
+    created: "2020-11-23T20:06:13.534642+01:00"
     description: Thingsboard
     digest: 24aa95413ba16e40c9970abc9ab10cb5b2e5ce413f973e824cc2f6db3c1a41e8
     name: thingsboard
@@ -45,7 +61,7 @@ entries:
     version: 0.4.2
   - apiVersion: v2
     appVersion: 3.1.0
-    created: "2020-10-05T20:52:21.355082+02:00"
+    created: "2020-11-23T20:06:13.528884+01:00"
     description: Thingsboard
     digest: 9caa1abc0cd46fadeb6bff9089668f45db82de67822441b808e5cc2fe4c3c613
     name: thingsboard
@@ -55,7 +71,7 @@ entries:
     version: 0.4.1
   - apiVersion: v2
     appVersion: 3.1.0
-    created: "2020-10-05T20:52:21.348844+02:00"
+    created: "2020-11-23T20:06:13.523287+01:00"
     description: Thingsboard
     digest: 9077eafce89d8766bb9cda119a942b133d7e7692557fadb8ad8b1256a69c653c
     name: thingsboard
@@ -65,7 +81,7 @@ entries:
     version: 0.4.0
   - apiVersion: v2
     appVersion: 2.4.3
-    created: "2020-10-05T20:52:21.343318+02:00"
+    created: "2020-11-23T20:06:13.518271+01:00"
     description: Thingsboard
     digest: 0b732e67beb7de8c865dd4f59d27738144b90c296d00709b44799d13cce48434
     name: thingsboard
@@ -75,7 +91,7 @@ entries:
     version: 0.3.2
   - apiVersion: v2
     appVersion: 2.4.3
-    created: "2020-10-05T20:52:21.338464+02:00"
+    created: "2020-11-23T20:06:13.513983+01:00"
     description: Thingsboard
     digest: 30f1b0bfd8627de56febc10fa028d71fea2923ca102e30d23f4a08f82c16074c
     name: thingsboard
@@ -85,7 +101,7 @@ entries:
     version: 0.3.1
   - apiVersion: v2
     appVersion: 2.4.3
-    created: "2020-10-05T20:52:21.333909+02:00"
+    created: "2020-11-23T20:06:13.510159+01:00"
     dependencies:
     - alias: web
       condition: web.enabled
@@ -124,4 +140,4 @@ entries:
     urls:
     - thingsboard-0.2.1.tgz
     version: 0.2.1
-generated: "2020-10-05T20:52:21.331107+02:00"
+generated: "2020-11-23T20:06:13.508022+01:00"
