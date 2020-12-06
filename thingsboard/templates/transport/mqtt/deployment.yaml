@@ -79,7 +79,7 @@ spec:
       {{- end }}
       {{- if .Values.transport.mqtt.affinity }}
       affinity:
-      {{ toYaml .Values.transport.mqtt.affinity | indent 8 }}
+      {{ toYaml .Values.transport.mqtt.affinity | nindent 8 }}
       {{- end }}
       volumes:
         - name: config-volume
