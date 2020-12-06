@@ -86,7 +86,7 @@ spec:
       {{- end }}
       {{- if .Values.node.affinity }}
       affinity:
-      {{ toYaml .Values.node.affinity | indent 8 }}
+      {{ toYaml .Values.node.affinity | nindent 8 }}
       {{- end }}
       volumes:
         - name: config-volume

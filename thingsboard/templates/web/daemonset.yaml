@@ -74,7 +74,7 @@ spec:
       {{- end }}
       {{- if .Values.web.affinity }}
       affinity:
-      {{ toYaml .Values.web.affinity | indent 8 }}
+      {{ toYaml .Values.web.affinity | nindent 8 }}
       {{- end }}
       volumes:
         - name: config-volume
