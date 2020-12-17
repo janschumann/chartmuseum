@@ -51,6 +51,9 @@ spec:
             - name: mqtt
               containerPort: 1883
               protocol: TCP
+            - name: metrics
+              containerPort: 9090
+              protocol: TCP
           livenessProbe:
             tcpSocket:
               port: 1883
