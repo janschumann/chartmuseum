@@ -4,7 +4,7 @@ kind: Service
 metadata:
   {{- if .Values.node.service.annotations }}
   annotations:
-    {{ toYaml .Values.node.service.annotations }}
+  {{ toYaml .Values.node.service.annotations | nindent 4 }}
   {{- end }}
   labels:
   {{- include "thingsboard.node.labels" . | nindent 4 }}
